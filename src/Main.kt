@@ -41,13 +41,13 @@ fun main(args: Array<String>) {
 }
 
 fun searchAndPlayBestTrade(enemyToTrade: Card, gameState: State) : List<Action> {
-    val actions = mutableListOf<Action>()
-    val findATrade: Boolean = if (enemyToTrade.abilities.contains(WARD)) {
-        actions.addAll(searchBestTradeVersusWardCreature(gameState, enemyToTrade))
+    val actions = if (enemyToTrade.abilities.contains(WARD)) {
+        searchBestTradeVersusWardCreature(gameState, enemyToTrade)
     } else {
-        actions.addAll(searchBestTradeVersusNormalCreature(gameState, enemyToTrade))
+        searchBestTradeVersusNormalCreature(gameState, enemyToTrade)
     }
-    if (findATrade) {
+    if (actions.isNotEmpty()) {
+        System.err.println("removing enemy trade")
         gameState.board.opponentCards.remove(enemyToTrade)
     }
     return actions
